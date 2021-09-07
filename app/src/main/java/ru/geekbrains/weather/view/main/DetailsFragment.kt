@@ -41,11 +41,13 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setData(weather: Weather) {
-        binding.cityName.text = weather.city.name
-        binding.cityCoordinates.text = "latitude ${weather.city.latitude}\n" +
-                "longitude ${weather.city.longitude}"
-        binding.temperatureValue.text = weather.temperature.toString()
-        binding.feelsLikeValue.text = "${weather.feelsLike}"
+        with(binding) {
+            cityName.text = weather.city.name
+            cityCoordinates.text = "latitude ${weather.city.latitude}\n" +
+                    "longitude ${weather.city.longitude}"
+            temperatureValue.text = weather.temperature.toString()
+            feelsLikeValue.text = "${weather.feelsLike}"
+        }
     }
 
     override fun onDestroy() {

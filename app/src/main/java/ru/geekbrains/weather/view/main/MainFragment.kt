@@ -44,21 +44,20 @@ class MainFragment : Fragment(), OnCityViewClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.mainFragmentRecyclerView.adapter = adapter
-        adapter.setOnCityViewClickListener(this)
-
-        binding.mainFragmentFAB.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
+        with(binding) {
+            mainFragmentRecyclerView.adapter = adapter
+            adapter.setOnCityViewClickListener(this@MainFragment)
+            mainFragmentFAB.setOnClickListener {
                 isDataSourceRus = !isDataSourceRus
                 if (isDataSourceRus) {
                     viewModel.getWeatherFromLocalSourceRus()
-                    binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+                    mainFragmentFAB.setImageResource(R.drawable.ic_russia)
                 } else {
                     viewModel.getWeatherFromLocalSourceWorld()
-                    binding.mainFragmentFAB.setImageResource(R.drawable.ic_world)
+                    mainFragmentFAB.setImageResource(R.drawable.ic_world)
                 }
             }
-        })
+        }
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppState> {
