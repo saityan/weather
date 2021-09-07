@@ -60,10 +60,13 @@ class MainFragment : Fragment(), OnCityViewClickListener {
         }
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppState> {
-            appState : AppState -> renderData(appState)
-        })
-        viewModel.getWeatherFromLocalSourceRus()
+        with(viewModel) {
+            getLiveData()
+                .observe(viewLifecycleOwner, Observer<AppState> { appState: AppState ->
+                    renderData(appState)
+                })
+            getWeatherFromLocalSourceRus()
+        }
     }
 
     private fun renderData(appState: AppState) {
@@ -80,9 +83,13 @@ class MainFragment : Fragment(), OnCityViewClickListener {
                 binding.mainFragmentLoadingLayout.visibility = View.GONE
                 val weather = appState.weatherData
                 adapter.setWeather(weather)
-                Snackbar.make(binding.root, "Success", Snackbar.LENGTH_LONG).show()
+                binding.root.showSnackbarWithoutAction(binding.root, R.string.snackbar, Snackbar.LENGTH_SHORT)
             }
         }
+    }
+
+    fun View.showSnackbarWithoutAction(view : View, stringId : Int, length : Int) {
+        Snackbar.make(view, getString(stringId), length).show()
     }
 
     override fun onDestroy() {
