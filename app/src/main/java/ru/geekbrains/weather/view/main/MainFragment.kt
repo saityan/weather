@@ -44,27 +44,29 @@ class MainFragment : Fragment(), OnCityViewClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.mainFragmentRecyclerView.adapter = adapter
-        adapter.setOnCityViewClickListener(this)
-
-        binding.mainFragmentFAB.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
+        with(binding) {
+            mainFragmentRecyclerView.adapter = adapter
+            adapter.setOnCityViewClickListener(this@MainFragment)
+            mainFragmentFAB.setOnClickListener {
                 isDataSourceRus = !isDataSourceRus
                 if (isDataSourceRus) {
                     viewModel.getWeatherFromLocalSourceRus()
-                    binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+                    mainFragmentFAB.setImageResource(R.drawable.ic_russia)
                 } else {
                     viewModel.getWeatherFromLocalSourceWorld()
-                    binding.mainFragmentFAB.setImageResource(R.drawable.ic_world)
+                    mainFragmentFAB.setImageResource(R.drawable.ic_world)
                 }
             }
-        })
+        }
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppState> {
-            appState : AppState -> renderData(appState)
-        })
-        viewModel.getWeatherFromLocalSourceRus()
+        with(viewModel) {
+            getLiveData()
+                .observe(viewLifecycleOwner, Observer<AppState> { appState: AppState ->
+                    renderData(appState)
+                })
+            getWeatherFromLocalSourceRus()
+        }
     }
 
     private fun renderData(appState: AppState) {
@@ -81,9 +83,13 @@ class MainFragment : Fragment(), OnCityViewClickListener {
                 binding.mainFragmentLoadingLayout.visibility = View.GONE
                 val weather = appState.weatherData
                 adapter.setWeather(weather)
-                Snackbar.make(binding.root, "Success", Snackbar.LENGTH_LONG).show()
+                binding.root.showSnackbarWithoutAction(binding.root, R.string.snackbar, Snackbar.LENGTH_SHORT)
             }
         }
+    }
+
+    fun View.showSnackbarWithoutAction(view : View, stringId : Int, length : Int) {
+        Snackbar.make(view, getString(stringId), length).show()
     }
 
     override fun onDestroy() {
