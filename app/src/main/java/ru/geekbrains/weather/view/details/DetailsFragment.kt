@@ -1,4 +1,4 @@
-package ru.geekbrains.weather.view.main
+package ru.geekbrains.weather.view.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.geekbrains.weather.databinding.FragmentDetailsBinding
 import ru.geekbrains.weather.domain.Weather
+import ru.geekbrains.weather.repository.WeatherDTO
+import ru.geekbrains.weather.repository.WeatherLoader
+import ru.geekbrains.weather.repository.WeatherLoaderListener
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), WeatherLoaderListener {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding
@@ -34,24 +37,38 @@ class DetailsFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val weather = (arguments?.getParcelable<Weather>(BUNDLE_WEATHER_KEY)) ?: Weather()
-        setData(weather)
+    val localWeather : Weather by lazy {
+        arguments?.getParcelable(BUNDLE_WEATHER_KEY) ?: Weather()
     }
 
-    private fun setData(weather: Weather) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        WeatherLoader(this, localWeather.city.lat, localWeather.city.lon)
+    }
+
+    private fun showWeather(weatherDTO : WeatherDTO) {
         with(binding) {
-            cityName.text = weather.city.name
-            cityCoordinates.text = "latitude ${weather.city.latitude}\n" +
-                    "longitude ${weather.city.longitude}"
-            temperatureValue.text = weather.temperature.toString()
-            feelsLikeValue.text = "${weather.feelsLike}"
+            with(weatherDTO) {
+                cityName.text = localWeather.city.name
+                cityCoordinates.text = "latitude ${localWeather.city.lat}\n" +
+                        "longitude ${localWeather.city.lon}"
+                temperatureValue.text = fact.temp.toString()
+                feelsLikeValue.text = "${fact.feels_like}"
+                weatherCondition.text = fact.condition
+            }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onLoaded(weatherDTO: WeatherDTO) {
+        showWeather(weatherDTO)
+    }
+
+    override fun onFailed(throwable: Throwable) {
+        TODO("Not yet implemented")
     }
 }

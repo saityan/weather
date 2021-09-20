@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
-import ru.geekbrains.weather.R
 import ru.geekbrains.weather.databinding.ActivityMainWebviewBinding
-import ru.geekbrains.weather.databinding.FragmentDetailsBinding
-import ru.geekbrains.weather.view.main.MainFragment
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL

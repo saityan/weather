@@ -12,6 +12,7 @@ import ru.geekbrains.weather.R
 import ru.geekbrains.weather.databinding.FragmentMainBinding
 import ru.geekbrains.weather.domain.Weather
 import ru.geekbrains.weather.view.OnCityViewClickListener
+import ru.geekbrains.weather.view.details.DetailsFragment
 import ru.geekbrains.weather.viewmodel.AppState
 import ru.geekbrains.weather.viewmodel.MainViewModel
 
