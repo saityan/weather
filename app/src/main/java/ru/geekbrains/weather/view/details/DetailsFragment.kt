@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import ru.geekbrains.weather.databinding.FragmentDetailsBinding
 import ru.geekbrains.weather.domain.Weather
 import ru.geekbrains.weather.repository.WeatherDTO
 import ru.geekbrains.weather.repository.WeatherLoader
 import ru.geekbrains.weather.repository.WeatherLoaderListener
+import ru.geekbrains.weather.viewmodel.AppState
 
 class DetailsFragment : Fragment(), WeatherLoaderListener {
 
@@ -69,6 +71,6 @@ class DetailsFragment : Fragment(), WeatherLoaderListener {
     }
 
     override fun onFailed(throwable: Throwable) {
-        TODO("Not yet implemented")
+        Snackbar.make(binding.root, "CONNECTION ERROR", Snackbar.LENGTH_SHORT).show()
     }
 }
