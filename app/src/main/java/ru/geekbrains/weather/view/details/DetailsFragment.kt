@@ -43,7 +43,7 @@ class DetailsFragment : Fragment(), WeatherLoaderListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        WeatherLoader(this, localWeather.city.lat, localWeather.city.lon)
+        WeatherLoader(this, localWeather.city.lat, localWeather.city.lon).loadWeather()
     }
 
     private fun showWeather(weatherDTO : WeatherDTO) {
