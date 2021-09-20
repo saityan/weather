@@ -11,7 +11,6 @@ import ru.geekbrains.weather.domain.Weather
 import ru.geekbrains.weather.repository.WeatherDTO
 import ru.geekbrains.weather.repository.WeatherLoader
 import ru.geekbrains.weather.repository.WeatherLoaderListener
-import ru.geekbrains.weather.viewmodel.AppState
 
 class DetailsFragment : Fragment(), WeatherLoaderListener {
 
