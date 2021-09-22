@@ -16,9 +16,7 @@ class DetailsFragment : Fragment(), WeatherLoaderListener {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding
-        get() {
-            return _binding!!
-        }
+    get() = _binding!!
 
     companion object {
         fun newInstance(bundle: Bundle) : DetailsFragment {
@@ -33,7 +31,7 @@ class DetailsFragment : Fragment(), WeatherLoaderListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }

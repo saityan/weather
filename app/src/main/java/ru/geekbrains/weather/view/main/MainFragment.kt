@@ -20,9 +20,7 @@ class MainFragment : Fragment(), OnCityViewClickListener {
 
     private var _binding: FragmentMainBinding? = null
     private val binding : FragmentMainBinding
-    get(){
-        return _binding!!
-    }
+    get() = _binding!!
 
     private var isDataSourceRus : Boolean = true
     private var adapter = MainFragmentAdapter()
@@ -37,7 +35,7 @@ class MainFragment : Fragment(), OnCityViewClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
