@@ -1,10 +1,15 @@
 package ru.geekbrains.weather.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import ru.geekbrains.weather.databinding.FragmentDetailsBinding
 import ru.geekbrains.weather.domain.Weather
@@ -42,7 +47,14 @@ class DetailsFragment : Fragment(), WeatherLoaderListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        WeatherLoader(this, localWeather.city.lat, localWeather.city.lon).loadWeather()
+        //WeatherLoader(this, localWeather.city.lat, localWeather.city.lon).loadWeather()
+
+        val intent = Intent(requireActivity(), DetailsService :: class.java)
+        intent.putExtra(LATITUDE_EXTRA, localWeather.city.lat)
+        intent.putExtra(LONGITUDE_EXTRA, localWeather.city.lon)
+        requireActivity().startService(intent)
+        LocalBroadcastManager.getInstance(requireActivity())
+            .registerReceiver(receiver, IntentFilter(DETAILS_INTENT_FILTER))
     }
 
     private fun showWeather(weatherDTO : WeatherDTO) {
@@ -55,6 +67,14 @@ class DetailsFragment : Fragment(), WeatherLoaderListener {
                 feelsLikeValue.text = "${fact.feels_like}"
                 weatherCondition.text = fact.condition
             }
+        }
+    }
+
+    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val weatherDTO = intent?.getParcelableExtra<WeatherDTO>(DETAILS_LOAD_RESULT_EXTRA)
+            if (weatherDTO != null) { showWeather(weatherDTO) }
+            else {/*ERROR*/}
         }
     }
 

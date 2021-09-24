@@ -16,6 +16,8 @@
             android:exported="true">
         </activity>
 
+        <service android:name=".view.details.DetailsService"/>
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
