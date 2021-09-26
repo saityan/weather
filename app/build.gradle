@@ -12,6 +12,13 @@ android {
         viewBinding true
     }
 
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+        def apiKey = properties.getProperty("API_KEY", "")
+        it.buildConfigField("String", "WEATHER_API_KEY", apiKey)
+    }
+
     defaultConfig {
         applicationId "ru.geekbrains.weather"
         minSdk 24
