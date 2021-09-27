@@ -10,6 +10,7 @@ import ru.geekbrains.weather.repository.DetailsRepositoryImplementation
 import ru.geekbrains.weather.repository.RemoteDataSource
 import ru.geekbrains.weather.repository.WeatherDTO
 import ru.geekbrains.weather.utils.convertDTOtoModel
+import ru.geekbrains.weather.viewmodel.AppState.*
 import java.io.IOException
 
 class DetailsViewModel (
@@ -21,22 +22,22 @@ class DetailsViewModel (
     fun getLiveData() = detailsLiveDataToObserve
 
     fun getWeatherFromRemoteSource(requestLink: String) {
-        detailsLiveDataToObserve.value = AppState.Loading
+        detailsLiveDataToObserve.value = Loading
         detailsRepositoryImplementation.getWeatherDetailsFromRemote(requestLink, callback)
     }
 
     private val callback = object : Callback {
         override fun onFailure(call: Call, e: IOException) {
-            TODO("Not yet implemented")
+            detailsLiveDataToObserve.postValue(Error(Throwable()))
         }
 
         override fun onResponse(call: Call, response: Response) {
             val serverResponse: String? = response.body?.string()
             if (response.isSuccessful && serverResponse != null) {
                 val weatherDTO = Gson().fromJson(serverResponse, WeatherDTO::class.java)
-                detailsLiveDataToObserve.postValue(AppState.Success(convertDTOtoModel(weatherDTO)))
+                detailsLiveDataToObserve.postValue(Success(convertDTOtoModel(weatherDTO)))
             } else {
-                TODO("Not yet implemented")
+                detailsLiveDataToObserve.postValue(Error(Throwable()))
             }
         }
     }

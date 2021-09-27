@@ -9,10 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.geekbrains.weather.databinding.FragmentDetailsBinding
 import ru.geekbrains.weather.domain.Weather
+import ru.geekbrains.weather.utils.showSnack
 import ru.geekbrains.weather.viewmodel.AppState
 import ru.geekbrains.weather.viewmodel.DetailsViewModel
 
-class DetailsFragment : Fragment(){
+class DetailsFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by lazy {
         ViewModelProvider(this).get(DetailsViewModel :: class.java)
@@ -56,8 +57,15 @@ class DetailsFragment : Fragment(){
     private fun renderData(appState: AppState) {
         when(appState) {
             is AppState.Error -> {
+                binding.loadingLayout.visibility = View.INVISIBLE
+                binding.mainView.visibility = View.VISIBLE
                 val throwable = appState.error
-                Snackbar.make(binding.root, "ERROR $throwable", Snackbar.LENGTH_SHORT).show()
+                binding.root.showSnack("CONNECTION ERROR $throwable", "RELOAD") {
+                    viewModel.getWeatherFromRemoteSource(
+                        "https://api.weather.yandex.ru/v2/informers?lat=" +
+                                "${localWeather.city.lat}&lon=${localWeather.city.lon}"
+                    )
+                }
             }
             AppState.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
