@@ -1,11 +1,11 @@
 package ru.geekbrains.weather.view
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import ru.geekbrains.weather.databinding.ActivityMainWebviewBinding
 import java.io.BufferedReader
 import java.io.InputStreamReader

@@ -1,23 +1,22 @@
 package ru.geekbrains.weather.view.details
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.geekbrains.weather.databinding.FragmentDetailsBinding
 import ru.geekbrains.weather.domain.Weather
-import ru.geekbrains.weather.repository.WeatherDTO
-import ru.geekbrains.weather.repository.WeatherLoader
-import ru.geekbrains.weather.repository.WeatherLoaderListener
+import ru.geekbrains.weather.viewmodel.AppState
+import ru.geekbrains.weather.viewmodel.DetailsViewModel
 
-class DetailsFragment : Fragment(), WeatherLoaderListener {
+class DetailsFragment : Fragment(){
+
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this).get(DetailsViewModel :: class.java)
+    }
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding
@@ -41,54 +40,54 @@ class DetailsFragment : Fragment(), WeatherLoaderListener {
         return binding.root
     }
 
-    val localWeather : Weather by lazy {
+    private val localWeather : Weather by lazy {
         arguments?.getParcelable(BUNDLE_WEATHER_KEY) ?: Weather()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //WeatherLoader(this, localWeather.city.lat, localWeather.city.lon).loadWeather()
-
-        val intent = Intent(requireActivity(), DetailsService :: class.java)
-        intent.putExtra(LATITUDE_EXTRA, localWeather.city.lat)
-        intent.putExtra(LONGITUDE_EXTRA, localWeather.city.lon)
-        requireActivity().startService(intent)
-        LocalBroadcastManager.getInstance(requireActivity())
-            .registerReceiver(receiver, IntentFilter(DETAILS_INTENT_FILTER))
+        viewModel.getLiveData().observe(viewLifecycleOwner, {
+            renderData(it)
+        })
+        viewModel.getWeatherFromRemoteSource("https://api.weather.yandex.ru/v2/informers?lat=" +
+                "${localWeather.city.lat}&lon=${localWeather.city.lon}")
     }
 
-    private fun showWeather(weatherDTO : WeatherDTO) {
-        with(binding) {
-            with(weatherDTO) {
-                cityName.text = localWeather.city.name
-                cityCoordinates.text = "latitude ${localWeather.city.lat}\n" +
-                        "longitude ${localWeather.city.lon}"
-                temperatureValue.text = fact.temp.toString()
-                feelsLikeValue.text = "${fact.feels_like}"
-                weatherCondition.text = fact.condition
+    private fun renderData(appState: AppState) {
+        when(appState) {
+            is AppState.Error -> {
+                val throwable = appState.error
+                Snackbar.make(binding.root, "ERROR $throwable", Snackbar.LENGTH_SHORT).show()
+            }
+            AppState.Loading -> {
+                binding.loadingLayout.visibility = View.VISIBLE
+                binding.mainView.visibility = View.INVISIBLE
+            }
+            is AppState.Success -> {
+                binding.loadingLayout.visibility = View.INVISIBLE
+                binding.mainView.visibility = View.VISIBLE
+                val weather = appState.weatherData
+                showWeather(weather[0])
+                Snackbar.make(binding.root, "SUCCESS", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
 
-    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val weatherDTO = intent?.getParcelableExtra<WeatherDTO>(DETAILS_LOAD_RESULT_EXTRA)
-            if (weatherDTO != null) { showWeather(weatherDTO) }
-            else {/*ERROR*/}
+    private fun showWeather(weather: Weather) {
+        with(binding) {
+            with(weather) {
+                cityName.text = localWeather.city.name
+                cityCoordinates.text = "latitude ${localWeather.city.lat}\n" +
+                        "longitude ${localWeather.city.lon}"
+                temperatureValue.text = temp.toString()
+                feelsLikeValue.text = "$feels_like"
+                weatherCondition.text = condition
+            }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(receiver)
-    }
-
-    override fun onLoaded(weatherDTO: WeatherDTO) {
-        showWeather(weatherDTO)
-    }
-
-    override fun onFailed(throwable: Throwable) {
-        Snackbar.make(binding.root, "CONNECTION ERROR", Snackbar.LENGTH_SHORT).show()
     }
 }
