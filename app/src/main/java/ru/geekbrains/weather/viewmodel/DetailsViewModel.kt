@@ -2,16 +2,13 @@ package ru.geekbrains.weather.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
+import retrofit2.Call
+import retrofit2.Response
 import ru.geekbrains.weather.repository.DetailsRepositoryImplementation
 import ru.geekbrains.weather.repository.RemoteDataSource
 import ru.geekbrains.weather.repository.WeatherDTO
 import ru.geekbrains.weather.utils.convertDTOtoModel
 import ru.geekbrains.weather.viewmodel.AppState.*
-import java.io.IOException
 
 class DetailsViewModel (
     private val detailsLiveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
@@ -21,24 +18,26 @@ class DetailsViewModel (
 
     fun getLiveData() = detailsLiveDataToObserve
 
-    fun getWeatherFromRemoteSource(requestLink: String) {
+    fun getWeatherFromRemoteSource(lat: Double, lon: Double) {
         detailsLiveDataToObserve.value = Loading
-        detailsRepositoryImplementation.getWeatherDetailsFromRemote(requestLink, callback)
+        detailsRepositoryImplementation.getWeatherDetailsFromRemote(lat, lon, callback)
     }
 
-    private val callback = object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
-            detailsLiveDataToObserve.postValue(Error(Throwable()))
-        }
+    private val callback = object : retrofit2.Callback<WeatherDTO> {
 
-        override fun onResponse(call: Call, response: Response) {
-            val serverResponse: String? = response.body?.string()
-            if (response.isSuccessful && serverResponse != null) {
-                val weatherDTO = Gson().fromJson(serverResponse, WeatherDTO::class.java)
-                detailsLiveDataToObserve.postValue(Success(convertDTOtoModel(weatherDTO)))
+        override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
+            val weatherDTO = response.body()
+            if (response.isSuccessful && weatherDTO != null) {
+                weatherDTO.let {
+                    detailsLiveDataToObserve.postValue(Success(convertDTOtoModel(weatherDTO)))
+                }
             } else {
                 detailsLiveDataToObserve.postValue(Error(Throwable()))
             }
+        }
+
+        override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
+            detailsLiveDataToObserve.postValue(Error(Throwable()))
         }
     }
 }

@@ -50,8 +50,7 @@ class DetailsFragment : Fragment() {
         viewModel.getLiveData().observe(viewLifecycleOwner, {
             renderData(it)
         })
-        viewModel.getWeatherFromRemoteSource("https://api.weather.yandex.ru/v2/informers?lat=" +
-                "${localWeather.city.lat}&lon=${localWeather.city.lon}")
+        viewModel.getWeatherFromRemoteSource(localWeather.city.lat, localWeather.city.lon)
     }
 
     private fun renderData(appState: AppState) {
@@ -61,10 +60,7 @@ class DetailsFragment : Fragment() {
                 binding.mainView.visibility = View.VISIBLE
                 val throwable = appState.error
                 binding.root.showSnack("CONNECTION ERROR $throwable", "RELOAD") {
-                    viewModel.getWeatherFromRemoteSource(
-                        "https://api.weather.yandex.ru/v2/informers?lat=" +
-                                "${localWeather.city.lat}&lon=${localWeather.city.lon}"
-                    )
+                    viewModel.getWeatherFromRemoteSource(localWeather.city.lat, localWeather.city.lon)
                 }
             }
             AppState.Loading -> {
