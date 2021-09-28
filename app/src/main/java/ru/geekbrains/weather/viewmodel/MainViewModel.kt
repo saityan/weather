@@ -23,13 +23,13 @@ class MainViewModel(private val liveDataToObserve:MutableLiveData<AppState> = Mu
                 sleep(750)
                 if (isRussian)
                     postValue(
-                        AppState.Success(
+                        AppState.SuccessMain(
                             repositoryImplementation.getWeatherFromLocalStorageRus()
                         )
                     )
                 else
                     postValue(
-                        AppState.Success(
+                        AppState.SuccessMain(
                             repositoryImplementation.getWeatherFromLocalStorageWorld()
                         )
                     )

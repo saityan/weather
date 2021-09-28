@@ -29,7 +29,7 @@ class DetailsViewModel (
             val weatherDTO = response.body()
             if (response.isSuccessful && weatherDTO != null) {
                 weatherDTO.let {
-                    detailsLiveDataToObserve.postValue(Success(convertDTOtoModel(weatherDTO)))
+                    detailsLiveDataToObserve.postValue(SuccessDetails(convertDTOtoModel(weatherDTO)))
                 }
             } else {
                 detailsLiveDataToObserve.postValue(Error(Throwable()))

@@ -68,11 +68,11 @@ class DetailsFragment : Fragment() {
                 binding.loadingLayout.visibility = View.VISIBLE
                 binding.mainView.visibility = View.INVISIBLE
             }
-            is AppState.Success -> {
+            is AppState.SuccessDetails -> {
                 binding.loadingLayout.visibility = View.INVISIBLE
                 binding.mainView.visibility = View.VISIBLE
                 val weather = appState.weatherData
-                showWeather(weather[0])
+                showWeather(weather)
                 Snackbar.make(binding.root, "SUCCESS", Snackbar.LENGTH_SHORT).show()
             }
         }
