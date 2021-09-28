@@ -6,6 +6,7 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 import ru.geekbrains.weather.utils.YANDEX_API_KEY_NAME
 import ru.geekbrains.weather.utils.YANDEX_API_URL_END_POINT
+import ru.geekbrains.weather.utils.YANDEX_API_URL_END_POINT_FACT
 import ru.geekbrains.weather.utils.YANDEX_API_URL_END_POINT_IMG
 
 interface WeatherApi {
@@ -19,7 +20,8 @@ interface WeatherApi {
         ) : Call<WeatherDTO>
 
     @GET(YANDEX_API_URL_END_POINT_IMG)
-    fun getImage() {
+    fun getImage() : Call<FactDTO>
 
-    }
+    @GET(YANDEX_API_URL_END_POINT_FACT)
+    fun getFact() : Call<FactDTO>
 }

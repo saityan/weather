@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import ru.geekbrains.weather.databinding.FragmentDetailsBinding
 import ru.geekbrains.weather.domain.Weather
 import ru.geekbrains.weather.utils.showSnack
@@ -86,6 +87,10 @@ class DetailsFragment : Fragment() {
                 temperatureValue.text = temp.toString()
                 feelsLikeValue.text = "$feels_like"
                 weatherCondition.text = condition
+                Picasso
+                    .get()
+                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                    .into(imageViewHeader)
             }
         }
     }
