@@ -2,7 +2,8 @@ package ru.geekbrains.weather.room
 
 import androidx.room.*
 
-interface HistoryEntityWrapper {
+@Dao
+interface HistoryDAO {
     @Query("SELECT * FROM HistoryEntity")
     fun getAllHistoryEntities(): List<HistoryEntity>
 

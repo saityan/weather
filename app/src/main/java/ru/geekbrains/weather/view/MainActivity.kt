@@ -2,10 +2,10 @@ package ru.geekbrains.weather.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.geekbrains.weather.MyApp.Companion.getHistoryDAO
 import ru.geekbrains.weather.R
 import ru.geekbrains.weather.databinding.ActivityMainBinding
 import ru.geekbrains.weather.view.main.MainFragment
-import ru.geekbrains.weather.MyApp.Companion.getHistoryWrapperInstance
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +17,6 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, MainFragment.newInstance()).commit()
-        getHistoryWrapperInstance()
+        getHistoryDAO()
     }
 }
