@@ -4,7 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Response
+import ru.geekbrains.weather.MyApp.Companion.getHistoryDAO
+import ru.geekbrains.weather.domain.Weather
 import ru.geekbrains.weather.repository.DetailsRepositoryImplementation
+import ru.geekbrains.weather.repository.LocalRepositoryImplementation
 import ru.geekbrains.weather.repository.RemoteDataSource
 import ru.geekbrains.weather.repository.WeatherDTO
 import ru.geekbrains.weather.utils.convertDTOtoModel
@@ -13,8 +16,14 @@ import ru.geekbrains.weather.viewmodel.AppState.*
 class DetailsViewModel (
     private val detailsLiveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val detailsRepositoryImplementation: DetailsRepositoryImplementation =
-        DetailsRepositoryImplementation(RemoteDataSource())
+        DetailsRepositoryImplementation(RemoteDataSource()),
+    private val historyRepositoryImplementation: LocalRepositoryImplementation =
+        LocalRepositoryImplementation(getHistoryDAO())
 ) : ViewModel() {
+
+    fun saveWeather(weather: Weather) {
+        historyRepositoryImplementation.saveEntity(weather)
+    }
 
     fun getLiveData() = detailsLiveDataToObserve
 

@@ -51,7 +51,7 @@ class DetailsFragment : Fragment() {
         viewModel.getLiveData().observe(viewLifecycleOwner, {
             renderData(it)
         })
-        viewModel.getWeatherFromRemoteSource(localWeather.city.lat, localWeather.city.lon)
+        getWeather()
     }
 
     private fun renderData(appState: AppState) {
@@ -61,7 +61,7 @@ class DetailsFragment : Fragment() {
                 binding.mainView.visibility = View.VISIBLE
                 val throwable = appState.error
                 binding.root.showSnack("CONNECTION ERROR $throwable", "RELOAD") {
-                    viewModel.getWeatherFromRemoteSource(localWeather.city.lat, localWeather.city.lon)
+                    getWeather()
                 }
             }
             AppState.Loading -> {
@@ -79,6 +79,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun showWeather(weather: Weather) {
+        viewModel.saveWeather(Weather(localWeather.city, weather.temp, weather.feels_like, weather.condition))
         with(binding) {
             with(weather) {
                 cityName.text = localWeather.city.name
@@ -90,6 +91,10 @@ class DetailsFragment : Fragment() {
                 binding.imageViewHeader.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
             }
         }
+    }
+
+    private fun getWeather() {
+        viewModel.getWeatherFromRemoteSource(localWeather.city.lat, localWeather.city.lon)
     }
 
     override fun onDestroy() {
