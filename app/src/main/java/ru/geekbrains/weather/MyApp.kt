@@ -1,4 +1,4 @@
-package ru.geekbrains.weather.viewmodel
+package ru.geekbrains.weather
 
 import android.app.Application
 import androidx.room.Room
@@ -17,7 +17,7 @@ class MyApp : Application() {
         private var db: HistoryDataBase? = null
         private const val DB_NAME = "HistoryDataBase.db"
 
-        fun getHistoryWrapper(): HistoryEntityWrapper {
+        fun getHistoryWrapperInstance(): HistoryEntityWrapper {
             if (db == null) {
                 if(appInstance != null) {
                     db = Room.databaseBuilder(appInstance!!.applicationContext, HistoryDataBase :: class.java, DB_NAME)
