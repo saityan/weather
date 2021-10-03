@@ -10,9 +10,9 @@ import ru.geekbrains.weather.domain.Weather
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
-    private var weatherData:List<Weather> = listOf()
+    private var weatherData : List<Weather> = listOf()
 
-    fun setWeather(data:List<Weather>){
+    fun setWeather (data:List<Weather>){
         weatherData = data
         notifyDataSetChanged()
     }
