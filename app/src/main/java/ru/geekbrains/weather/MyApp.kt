@@ -19,12 +19,20 @@ class MyApp : Application() {
 
         fun getHistoryDAO(): HistoryDAO {
             if (db == null) {
-                if(appInstance != null) {
-                    db = Room.databaseBuilder(appInstance!!.applicationContext, HistoryDataBase :: class.java, DB_NAME)
-                        .allowMainThreadQueries()
-                        .build()
-                } else {
-                    throw IllegalStateException("appInstance == null")
+                synchronized (HistoryDataBase::class.java) {
+                    if (db == null) {
+                        if (appInstance != null) {
+                            db = Room.databaseBuilder(
+                                appInstance!!.applicationContext,
+                                HistoryDataBase::class.java,
+                                DB_NAME
+                            )
+                                .allowMainThreadQueries()
+                                .build()
+                        } else {
+                            throw IllegalStateException("appInstance == null")
+                        }
+                    }
                 }
             }
             return db!!.getHistoryDAO()
