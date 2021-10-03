@@ -5,7 +5,7 @@
     <string name="city_coordinates">lt/ln: %s, %s"</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
-    <string name="snackbar">Успешно</string>
+    <string name="snackbar">Success</string>
     <string name="webViewOk">OK</string>
     <string name="defaultLink">https://gb.ru</string>
 </resources>
