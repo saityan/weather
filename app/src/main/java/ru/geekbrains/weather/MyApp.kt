@@ -26,9 +26,7 @@ class MyApp : Application() {
                                 appInstance!!.applicationContext,
                                 HistoryDataBase::class.java,
                                 DB_NAME
-                            )
-                                .allowMainThreadQueries()
-                                .build()
+                            ).build()
                         } else {
                             throw IllegalStateException("appInstance == null")
                         }
