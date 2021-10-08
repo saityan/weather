@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.geekbrains.weather.MyApp.Companion.getHistoryDAO
 import ru.geekbrains.weather.R
 import ru.geekbrains.weather.databinding.ActivityMainBinding
+import ru.geekbrains.weather.view.contentprovider.ContentProviderFragment
 import ru.geekbrains.weather.view.history.HistoryFragment
 import ru.geekbrains.weather.view.main.MainFragment
 
@@ -30,9 +31,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
+
             R.id.action_open_fragment_history -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, HistoryFragment.newInstance())
+                    .addToBackStack("")
+                    .commit()
+                true
+            }
+
+            R.id.action_open_fragment_content_provider -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, ContentProviderFragment.newInstance())
                     .addToBackStack("")
                     .commit()
                 true

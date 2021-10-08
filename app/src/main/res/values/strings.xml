@@ -9,4 +9,5 @@
     <string name="webViewOk">OK</string>
     <string name="defaultLink">https://gb.ru</string>
     <string name="history">History</string>
+    <string name="content_provider">ContentProvider</string>
 </resources>
