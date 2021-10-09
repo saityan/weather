@@ -27,6 +27,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="ru.geekbrains.weather.provider"
+            android:name=".view.contentprovider.EducationContentProvider"
+            android:exported="true"
+            android:enabled="true"/>
     </application>
 
 </manifest>
