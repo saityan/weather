@@ -20,7 +20,7 @@ class MainViewModel(private val liveDataToObserve:MutableLiveData<AppState> = Mu
 
         with(liveDataToObserve) {
             Thread {
-                sleep(750)
+                sleep(100)
                 if (isRussian)
                     postValue(
                         AppState.SuccessMain(

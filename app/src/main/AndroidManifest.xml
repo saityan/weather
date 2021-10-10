@@ -3,8 +3,10 @@
     package="ru.geekbrains.weather">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
+        android:name="MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,6 +27,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="ru.geekbrains.weather.provider"
+            android:name=".view.contentprovider.EducationContentProvider"
+            android:exported="true"
+            android:enabled="true"/>
     </application>
 
 </manifest>
