@@ -103,10 +103,7 @@ class ContentProviderFragment : Fragment() {
     private fun ContactRequestPermission() {
         val launcher =
             registerForActivityResult(ActivityResultContracts.RequestPermission())
-            { result ->
-                if (result)
-                    getContacts()
-            }
+            { result -> result?.let { getContacts() } }
         launcher.launch(Manifest.permission.READ_CONTACTS)
     }
 
