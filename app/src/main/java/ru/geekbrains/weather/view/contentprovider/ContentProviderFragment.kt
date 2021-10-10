@@ -2,6 +2,7 @@ package ru.geekbrains.weather.view.contentprovider
 
 import android.Manifest
 import android.app.AlertDialog
+import android.app.Instrumentation
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
@@ -12,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import ru.geekbrains.weather.databinding.FragmentContentProviderBinding
@@ -99,7 +103,13 @@ class ContentProviderFragment : Fragment() {
     }
 
     private fun ContactRequestPermission() {
-        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), this.requestCode)
+        val launcher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission())
+                { result ->
+                    if (result)
+                        getContacts()
+                }
+        launcher.launch(Manifest.permission.READ_CONTACTS)
     }
 
     private fun getContacts() {
