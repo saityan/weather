@@ -2,7 +2,6 @@ package ru.geekbrains.weather.view.contentprovider
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.Instrumentation
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
@@ -13,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -73,10 +70,11 @@ class ContentProviderFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when(requestCode) {
+        when (requestCode) {
             this.requestCode -> {
                 if (grantResults.isNotEmpty() && grantResults[0] ==
-                        PackageManager.PERMISSION_GRANTED) {
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     getContacts()
                 } else {
                     context?.let {
@@ -105,24 +103,25 @@ class ContentProviderFragment : Fragment() {
     private fun ContactRequestPermission() {
         val launcher =
             registerForActivityResult(ActivityResultContracts.RequestPermission())
-                { result ->
-                    if (result)
-                        getContacts()
-                }
+            { result ->
+                if (result)
+                    getContacts()
+            }
         launcher.launch(Manifest.permission.READ_CONTACTS)
     }
 
     private fun getContacts() {
         context?.let {
-            val contentResolver : ContentResolver = it.contentResolver
+            val contentResolver: ContentResolver = it.contentResolver
             val pointer: Cursor? = contentResolver.query(
-                ContactsContract.Contacts.CONTENT_URI,null, null, null,
-                ContactsContract.Contacts.DISPLAY_NAME + " DESC")
-            pointer?.let {pointer ->
+                ContactsContract.Contacts.CONTENT_URI, null, null, null,
+                ContactsContract.Contacts.DISPLAY_NAME + " DESC"
+            )
+            pointer?.let { pointer ->
                 for (i in 0 until pointer.count) {
                     val isMovable = pointer.moveToPosition(i)
                     val range = pointer.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
-                    if(isMovable && range > -1) {
+                    if (isMovable && range > -1) {
                         val name = pointer.getString(range)
                         binding.containerForContacts.addView(TextView(it).apply {
                             text = name
