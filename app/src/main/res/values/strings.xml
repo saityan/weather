@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Weather</string>
-    <string name="temperature_label">Температура</string>
-    <string name="feels_like_label">Ощущается как</string>
+    <string name="temperature_label">Temperature</string>
+    <string name="feels_like_label">Feels like</string>
     <string name="city_coordinates">lt/ln: %s, %s"</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
@@ -10,4 +10,16 @@
     <string name="defaultLink">https://gb.ru</string>
     <string name="history">History</string>
     <string name="content_provider">ContentProvider</string>
+    <string name="dialog_button_close">Close</string>
+    <string name="dialog_title_no_gps">Geopositioning access has been closed</string>
+    <string name="dialog_message_no_gps">Please allow geopositioning if you want to know the temperature of your current place</string>
+    <string name="dialog_title_gps_turned_off">GPS disabled</string>
+    <string name="dialog_message_last_location_unknown">Current location unknown. Please enable GPS if you want relevant information.</string>
+    <string name="dialog_message_last_known_location">The last known location is shown. Please, enable GPS to update your coordinates</string>
+    <string name="dialog_rationale_title">Geopositioning access</string>
+    <string name="dialog_rationale_message">Clarification</string>
+    <string name="dialog_rationale_give_access">Allow access</string>
+    <string name="dialog_rationale_decline">Decline</string>
+    <string name="dialog_address_title">Your address</string>
+    <string name="dialog_address_get_weather">Show weather</string>
 </resources>
