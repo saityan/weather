@@ -1,17 +1,20 @@
 package ru.geekbrains.weather.maps
 
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.location.Geocoder
 import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import ru.geekbrains.weather.R
+import ru.geekbrains.weather.databinding.FragmentGoogleMapsMainBinding
 
 class MapsFragment : Fragment() {
 
@@ -19,32 +22,92 @@ class MapsFragment : Fragment() {
         fun newInstance() = MapsFragment()
     }
 
+    private var _binding: FragmentGoogleMapsMainBinding? = null
+    private val binding : FragmentGoogleMapsMainBinding
+    get() = _binding!!
+
+    private lateinit var googleMap : GoogleMap
+
+    private val markers: ArrayList<Marker> = arrayListOf()
+
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val defaultLocation = LatLng(55.7, 37.6)
+        googleMap.addMarker(MarkerOptions().position(defaultLocation).title("Marker in default location"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation))
+
+        this@MapsFragment.googleMap = googleMap
+
+        with(this@MapsFragment.googleMap) {
+            uiSettings.isZoomControlsEnabled = true
+            uiSettings.isZoomGesturesEnabled = true
+            uiSettings.isMyLocationButtonEnabled = true
+            //isMyLocationEnabled = true
+            setOnMapLongClickListener {
+                moveToLocation(it)
+                addMapMarker(it)
+                drawMapLine()
+            }
+        }
+    }
+
+    private fun GoogleMap.addMapMarker(it: LatLng) {
+        markers.add(
+            this.addMarker(
+                MarkerOptions()
+                    .icon(
+                        BitmapDescriptorFactory
+                            .fromResource(R.drawable.ic_map_pin)
+                    )
+                    .position(it)
+                    .title("")
+            )
+        )
+    }
+
+    private fun GoogleMap.drawMapLine() {
+        val last = markers.size - 1
+        if (last > 0) {
+            val startMarker = markers[last - 1].position
+            val endMarker = markers[last].position
+            this.addPolyline(
+                PolylineOptions()
+                    .add(startMarker, endMarker)
+                    .color(Color.DKGRAY)
+                    .width(6f)
+            )
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+    ): View {
+        _binding = FragmentGoogleMapsMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        binding.buttonSearch.setOnClickListener {
+            val geocoder = Geocoder(requireContext())
+            val addressRow = binding.searchAddress.text.toString()
+            val address = geocoder.getFromLocationName (addressRow, 1)
+            val location = LatLng(address[0].latitude, address[0].longitude)
+            googleMap.clear()
+            moveToLocation(location)
+        }
+    }
+
+    private fun moveToLocation (location: LatLng) {
+        googleMap.addMarker(MarkerOptions().position(location))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
