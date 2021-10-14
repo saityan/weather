@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.geekbrains.weather.MyApp.Companion.getHistoryDAO
 import ru.geekbrains.weather.R
 import ru.geekbrains.weather.databinding.ActivityMainBinding
+import ru.geekbrains.weather.maps.MapsFragment
 import ru.geekbrains.weather.view.contentprovider.ContentProviderFragment
 import ru.geekbrains.weather.view.history.HistoryFragment
 import ru.geekbrains.weather.view.main.MainFragment
@@ -47,6 +48,15 @@ class MainActivity : AppCompatActivity() {
                     .commit()
                 true
             }
+
+            R.id.action_open_fragment_menu_google_maps -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, MapsFragment.newInstance())
+                    .addToBackStack("")
+                    .commit()
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
