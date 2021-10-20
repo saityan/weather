@@ -9,4 +9,8 @@
         android:id="@+id/action_open_fragment_content_provider"
         android:title="@string/content_provider"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_open_fragment_menu_google_maps"
+        android:title="@string/google_maps"
+        app:showAsAction="never" />
 </menu>
