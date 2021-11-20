@@ -51,17 +51,19 @@ class MapsFragment : Fragment() {
     }
 
     private fun GoogleMap.addMapMarker(it: LatLng) {
-        markers.add(
-            this.addMarker(
-                MarkerOptions()
-                    .icon(
-                        BitmapDescriptorFactory
-                            .fromResource(R.drawable.ic_map_pin)
-                    )
-                    .position(it)
-                    .title("")
+        this.addMarker(
+            MarkerOptions()
+                .icon(
+                    BitmapDescriptorFactory
+                        .fromResource(R.drawable.ic_map_pin)
+                )
+                .position(it)
+                .title("")
+        )?.let { it1 ->
+            markers.add(
+                it1
             )
-        )
+        }
     }
 
     private fun GoogleMap.drawMapLine() {

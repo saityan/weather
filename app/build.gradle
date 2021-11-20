@@ -31,8 +31,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    /*singingConfigs {
+        Properties properties = new Properties()
+        properties.load(rootProject.file("password.properties").newDataInputStream())
+        def password = properties.getProperty("password")
+        release {
+            storeFile file("weather.jks")
+            storePassword = password
+            keyAlias "weather"
+            keyPassword = password
+        }
+    }*/
+
     buildTypes {
         release {
+            //singingConfigs singingConfigs.release
             minifyEnabled false
             multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -55,15 +68,15 @@ android {
 
 dependencies {
     implementation 'androidx.room:room-runtime:2.3.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.0'
     kapt 'androidx.room:room-compiler:2.3.0'
     implementation 'io.coil-kt:coil:1.3.2'
     implementation 'io.coil-kt:coil-svg:1.3.2'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.8'
-    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
