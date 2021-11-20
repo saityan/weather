@@ -1,13 +1,12 @@
 package ru.geekbrains.weather.maps
 
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Geocoder
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,16 +22,18 @@ class MapsFragment : Fragment() {
     }
 
     private var _binding: FragmentGoogleMapsMainBinding? = null
-    private val binding : FragmentGoogleMapsMainBinding
-    get() = _binding!!
+    private val binding: FragmentGoogleMapsMainBinding
+        get() = _binding!!
 
-    private lateinit var googleMap : GoogleMap
+    private lateinit var googleMap: GoogleMap
 
     private val markers: ArrayList<Marker> = arrayListOf()
 
     private val callback = OnMapReadyCallback { googleMap ->
         val defaultLocation = LatLng(55.7, 37.6)
-        googleMap.addMarker(MarkerOptions().position(defaultLocation).title("Marker in default location"))
+        googleMap.addMarker(
+            MarkerOptions().position(defaultLocation).title("Marker in default location")
+        )
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation))
 
         this@MapsFragment.googleMap = googleMap
@@ -96,14 +97,14 @@ class MapsFragment : Fragment() {
         binding.buttonSearch.setOnClickListener {
             val geocoder = Geocoder(requireContext())
             val addressRow = binding.searchAddress.text.toString()
-            val address = geocoder.getFromLocationName (addressRow, 1)
+            val address = geocoder.getFromLocationName(addressRow, 1)
             val location = LatLng(address[0].latitude, address[0].longitude)
             googleMap.clear()
             moveToLocation(location)
         }
     }
 
-    private fun moveToLocation (location: LatLng) {
+    private fun moveToLocation(location: LatLng) {
         googleMap.addMarker(MarkerOptions().position(location))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
     }

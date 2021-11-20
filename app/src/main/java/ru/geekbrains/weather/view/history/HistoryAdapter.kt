@@ -10,9 +10,9 @@ import ru.geekbrains.weather.domain.Weather
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
-    private var weatherData : List<Weather> = listOf()
+    private var weatherData: List<Weather> = listOf()
 
-    fun setWeather (data:List<Weather>){
+    fun setWeather(data: List<Weather>) {
         weatherData = data
         notifyDataSetChanged()
     }
@@ -28,10 +28,10 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() 
         holder.render(weatherData[position])
     }
 
-    override fun getItemCount()= weatherData.size
+    override fun getItemCount() = weatherData.size
 
-    inner class HistoryViewHolder(view: View):RecyclerView.ViewHolder(view){
-        fun render(weather: Weather){
+    inner class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun render(weather: Weather) {
             itemView.findViewById<TextView>(R.id.recyclerViewItem).text = weather.city.name
         }
     }

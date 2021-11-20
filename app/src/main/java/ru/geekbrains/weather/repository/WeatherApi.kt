@@ -12,16 +12,15 @@ import ru.geekbrains.weather.utils.YANDEX_API_URL_END_POINT_IMG
 interface WeatherApi {
 
     @GET(YANDEX_API_URL_END_POINT)
-    fun getWeather
-        (
-            @Header(YANDEX_API_KEY_NAME) apikey: String,
-            @Query("lat") lat: Double,
-            @Query("lon") lon: Double
-        ) : Call<WeatherDTO>
+    fun getWeather(
+        @Header(YANDEX_API_KEY_NAME) apikey: String,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double
+    ): Call<WeatherDTO>
 
     @GET(YANDEX_API_URL_END_POINT_IMG)
-    fun getImage() : Call<FactDTO>
+    fun getImage(): Call<FactDTO>
 
     @GET(YANDEX_API_URL_END_POINT_FACT)
-    fun getFact() : Call<FactDTO>
+    fun getFact(): Call<FactDTO>
 }

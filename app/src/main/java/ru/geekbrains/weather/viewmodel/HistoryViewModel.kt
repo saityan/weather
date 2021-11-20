@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import ru.geekbrains.weather.MyApp
 import ru.geekbrains.weather.repository.LocalRepositoryImplementation
 
-class HistoryViewModel (
+class HistoryViewModel(
     private val historyLiveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val historyRepositoryImplementation: LocalRepositoryImplementation =
         LocalRepositoryImplementation(MyApp.getHistoryDAO())
@@ -14,10 +14,14 @@ class HistoryViewModel (
     fun getAllHistory() {
         historyLiveDataToObserve.value = AppState.Loading
         Thread {
-            historyLiveDataToObserve.postValue(AppState.SuccessMain(historyRepositoryImplementation
-            .getAllHistory()))
+            historyLiveDataToObserve.postValue(
+                AppState.SuccessMain(
+                    historyRepositoryImplementation
+                        .getAllHistory()
+                )
+            )
         }.start()
     }
 
-    fun getLiveData() =  historyLiveDataToObserve
+    fun getLiveData() = historyLiveDataToObserve
 }

@@ -39,7 +39,7 @@ class FCMservice : FirebaseMessagingService() {
     private fun pushNotification(title: String, message: String) {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        val intentAction = Intent(this, MainActivity :: class.java)
+        val intentAction = Intent(this, MainActivity::class.java)
         intentAction.putExtra("Action", "Some action")
         val intent = PendingIntent.getActivity(
             this, 0,
@@ -51,7 +51,7 @@ class FCMservice : FirebaseMessagingService() {
                 setSmallIcon(R.drawable.ic_map_pin)
                 setContentTitle(title)
                 setContentText(message)
-                addAction(R.drawable.ic_map_marker , "Open application", intent)
+                addAction(R.drawable.ic_map_marker, "Open application", intent)
                 priority = NotificationCompat.PRIORITY_HIGH
             }
 

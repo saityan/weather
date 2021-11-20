@@ -11,7 +11,7 @@
         android:id="@+id/imageViewHeader"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:id="@+id/mainView"
@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/margin_15_dp"
             android:textSize="@dimen/feels_like_text_size"
             android:textStyle="bold"
-            tools:text="Облачно"/>
+            tools:text="Облачно" />
 
         <TextView
             android:id="@+id/cityCoordinates"

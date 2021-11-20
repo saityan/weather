@@ -11,10 +11,10 @@ import ru.geekbrains.weather.view.OnCityViewClickListener
 
 class MainFragmentAdapter : RecyclerView.Adapter<MainFragmentAdapter.MainFragmentViewHolder>() {
 
-    private var weatherData : List<Weather> = listOf()
-    private lateinit var listener : OnCityViewClickListener
+    private var weatherData: List<Weather> = listOf()
+    private lateinit var listener: OnCityViewClickListener
 
-    fun setWeather(data : List<Weather>) {
+    fun setWeather(data: List<Weather>) {
         weatherData = data
         notifyDataSetChanged()
     }
@@ -35,10 +35,11 @@ class MainFragmentAdapter : RecyclerView.Adapter<MainFragmentAdapter.MainFragmen
 
     override fun getItemCount(): Int = weatherData.size
 
-    inner class MainFragmentViewHolder(view : View) : RecyclerView.ViewHolder(view) {
+    inner class MainFragmentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun render(weather: Weather) {
             itemView.findViewById<TextView>(
-                R.id.mainFragmentRecyclerItemTextView).text = weather.city.name
+                R.id.mainFragmentRecyclerItemTextView
+            ).text = weather.city.name
             itemView.setOnClickListener { listener.onCityClick(weather) }
         }
     }

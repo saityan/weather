@@ -8,7 +8,6 @@ import android.database.Cursor
 import android.net.Uri
 import ru.geekbrains.weather.MyApp.Companion.getHistoryDAO
 import ru.geekbrains.weather.room.*
-import java.lang.IllegalStateException
 
 const val ENTITY_PATH = "HistoryEntity"
 const val URI_ALL = 0
@@ -43,8 +42,10 @@ class EducationContentProvider : ContentProvider() {
         sordOrder: String?
     ): Cursor {
         val historyDAO: HistoryDAO = getHistoryDAO()
-        val pointer = when(this.uriMatcher.match(uri)) {
-            URI_ALL -> { historyDAO.getHistoryPointer() }
+        val pointer = when (this.uriMatcher.match(uri)) {
+            URI_ALL -> {
+                historyDAO.getHistoryPointer()
+            }
             URI_ID -> {
                 val id = ContentUris.parseId(uri)
                 historyDAO.getHistoryPointer(id)
@@ -56,9 +57,13 @@ class EducationContentProvider : ContentProvider() {
     }
 
     override fun getType(uri: Uri): String? {
-        return when(this.uriMatcher.match(uri)) {
-            URI_ALL -> { entityContentType }
-            URI_ID -> { entityContentItemType }
+        return when (this.uriMatcher.match(uri)) {
+            URI_ALL -> {
+                entityContentType
+            }
+            URI_ID -> {
+                entityContentItemType
+            }
             else -> null
         }
     }
@@ -75,12 +80,12 @@ class EducationContentProvider : ContentProvider() {
         return resultUri
     }
 
-    private fun map(values: ContentValues?) : HistoryEntity {
+    private fun map(values: ContentValues?): HistoryEntity {
         return if (values == null)
             HistoryEntity()
         else {
-            val id = if(values.containsKey(ID)) values[ID] as Long else 0
-            val name = if(values.containsKey(NAME)) values[NAME] as String else ""
+            val id = if (values.containsKey(ID)) values[ID] as Long else 0
+            val name = if (values.containsKey(NAME)) values[NAME] as String else ""
             val temperature = if (values.containsKey(TEMPERATURE)) values[TEMPERATURE] as Int else 0
             HistoryEntity(id, name, temperature)
         }
@@ -97,8 +102,10 @@ class EducationContentProvider : ContentProvider() {
         return 1
     }
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?,
-                        selectiinArgs: Array<out String>?): Int {
+    override fun update(
+        uri: Uri, values: ContentValues?, selection: String?,
+        selectiinArgs: Array<out String>?
+    ): Int {
         require(uriMatcher.match(uri) == URI_ALL) {
             "contentEntity type mismatch in $uri"
         }

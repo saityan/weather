@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import ru.geekbrains.weather.repository.RepositoryImplementation
 import java.lang.Thread.sleep
 
-class MainViewModel(private val liveDataToObserve:MutableLiveData<AppState> = MutableLiveData(),
-                    private val repositoryImplementation: RepositoryImplementation = RepositoryImplementation()
+class MainViewModel(
+    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
+    private val repositoryImplementation: RepositoryImplementation = RepositoryImplementation()
 ) : ViewModel() {
 
     fun getLiveData() = liveDataToObserve

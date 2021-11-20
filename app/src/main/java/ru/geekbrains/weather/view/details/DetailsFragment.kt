@@ -17,19 +17,20 @@ import ru.geekbrains.weather.viewmodel.DetailsViewModel
 class DetailsFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by lazy {
-        ViewModelProvider(this).get(DetailsViewModel :: class.java)
+        ViewModelProvider(this).get(DetailsViewModel::class.java)
     }
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding
-    get() = _binding!!
+        get() = _binding!!
 
     companion object {
-        fun newInstance(bundle: Bundle) : DetailsFragment {
+        fun newInstance(bundle: Bundle): DetailsFragment {
             val fragment = DetailsFragment()
             fragment.arguments = bundle
             return fragment
         }
+
         const val BUNDLE_WEATHER_KEY = "key"
     }
 
@@ -42,7 +43,7 @@ class DetailsFragment : Fragment() {
         return binding.root
     }
 
-    private val localWeather : Weather by lazy {
+    private val localWeather: Weather by lazy {
         arguments?.getParcelable(BUNDLE_WEATHER_KEY) ?: Weather()
     }
 
@@ -55,7 +56,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun renderData(appState: AppState) {
-        when(appState) {
+        when (appState) {
             is AppState.Error -> {
                 binding.loadingLayout.visibility = View.INVISIBLE
                 binding.mainView.visibility = View.VISIBLE
@@ -79,7 +80,14 @@ class DetailsFragment : Fragment() {
     }
 
     private fun showWeather(weather: Weather) {
-        viewModel.saveWeather(Weather(localWeather.city, weather.temp, weather.feels_like, weather.condition))
+        viewModel.saveWeather(
+            Weather(
+                localWeather.city,
+                weather.temp,
+                weather.feels_like,
+                weather.condition
+            )
+        )
         with(binding) {
             with(weather) {
                 cityName.text = localWeather.city.name

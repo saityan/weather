@@ -18,18 +18,18 @@ interface HistoryDAO {
     @Delete
     fun deleteHistoryEntity(entity: HistoryEntity)
 
-    @Query ("DELETE FROM HistoryEntity WHERE id=:id")
+    @Query("DELETE FROM HistoryEntity WHERE id=:id")
     fun deleteHistoryEntity(id: Long)
 
     @Update
-    fun updateHistoryEntity (entity: HistoryEntity)
+    fun updateHistoryEntity(entity: HistoryEntity)
 
-    @Insert (onConflict = OnConflictStrategy.IGNORE)
-    fun insertHistoryEntity (entity: HistoryEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertHistoryEntity(entity: HistoryEntity)
 
     @Query("SELECT id, name, temperature FROM HistoryEntity")
-    fun getHistoryPointer() : Cursor
+    fun getHistoryPointer(): Cursor
 
     @Query("SELECT id, name, temperature FROM HistoryEntity WHERE id=:id")
-    fun getHistoryPointer(id: Long) : Cursor
+    fun getHistoryPointer(id: Long): Cursor
 }

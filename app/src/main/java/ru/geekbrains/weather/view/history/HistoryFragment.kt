@@ -16,15 +16,15 @@ class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding: FragmentHistoryBinding
-    get() {
-        return _binding!!
-    }
+        get() {
+            return _binding!!
+        }
 
     private val adapter: HistoryAdapter by lazy {
         HistoryAdapter()
     }
 
-    private val viewModel:HistoryViewModel by lazy {
+    private val viewModel: HistoryViewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
     }
 

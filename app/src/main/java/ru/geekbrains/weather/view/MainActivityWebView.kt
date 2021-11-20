@@ -25,7 +25,7 @@ class MainActivityWebView : AppCompatActivity() {
         }
     }
 
-    private fun showURL (urlString : String) {
+    private fun showURL(urlString: String) {
         val url = URL(urlString)
 
         Thread {
@@ -37,7 +37,13 @@ class MainActivityWebView : AppCompatActivity() {
 
             val handler = Handler(Looper.getMainLooper())
             handler.post {
-                binding.webView.loadDataWithBaseURL(null, result, "text/html; charset=utf-8", "utf-8", null)
+                binding.webView.loadDataWithBaseURL(
+                    null,
+                    result,
+                    "text/html; charset=utf-8",
+                    "utf-8",
+                    null
+                )
             }
 
             urlConnection.disconnect()
@@ -46,7 +52,7 @@ class MainActivityWebView : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun getLines (reader : BufferedReader) : String {
+    private fun getLines(reader: BufferedReader): String {
         return reader.lines().collect(Collectors.joining("\n"))
     }
 }

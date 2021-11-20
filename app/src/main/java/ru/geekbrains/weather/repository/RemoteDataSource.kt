@@ -12,7 +12,7 @@ class RemoteDataSource {
         Retrofit.Builder()
             .baseUrl(YANDEX_API_URL)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-            .build().create(WeatherApi :: class.java)
+            .build().create(WeatherApi::class.java)
     }
 
     fun getWeatherDetails(lat: Double, lon: Double, callback: retrofit2.Callback<WeatherDTO>) {

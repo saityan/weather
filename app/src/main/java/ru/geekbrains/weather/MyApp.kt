@@ -2,9 +2,8 @@ package ru.geekbrains.weather
 
 import android.app.Application
 import androidx.room.Room
-import ru.geekbrains.weather.room.HistoryDataBase
 import ru.geekbrains.weather.room.HistoryDAO
-import java.lang.IllegalStateException
+import ru.geekbrains.weather.room.HistoryDataBase
 
 class MyApp : Application() {
     override fun onCreate() {
@@ -19,7 +18,7 @@ class MyApp : Application() {
 
         fun getHistoryDAO(): HistoryDAO {
             if (db == null) {
-                synchronized (HistoryDataBase::class.java) {
+                synchronized(HistoryDataBase::class.java) {
                     if (db == null) {
                         if (appInstance != null) {
                             db = Room.databaseBuilder(

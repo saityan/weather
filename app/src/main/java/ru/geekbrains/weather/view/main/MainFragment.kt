@@ -29,13 +29,13 @@ import ru.geekbrains.weather.viewmodel.MainViewModel
 class MainFragment : Fragment(), OnCityViewClickListener {
 
     private var _binding: FragmentMainBinding? = null
-    private val binding : FragmentMainBinding
-    get() = _binding!!
+    private val binding: FragmentMainBinding
+        get() = _binding!!
 
-    private var isDataSourceRus : Boolean = true
+    private var isDataSourceRus: Boolean = true
     private var adapter = MainFragmentAdapter()
 
-    private lateinit var viewModel : MainViewModel
+    private lateinit var viewModel: MainViewModel
 
     private val REQUEST_CODE = 777
     private val REFRESH_PERIOD = 6000L
@@ -51,7 +51,7 @@ class MainFragment : Fragment(), OnCityViewClickListener {
         showAddressDialog(address[0].getAddressLine(0), location)
     }
 
-    companion object{
+    companion object {
         fun newInstance() = MainFragment()
     }
 
@@ -62,8 +62,8 @@ class MainFragment : Fragment(), OnCityViewClickListener {
                 .setMessage(address)
                 .setPositiveButton(R.string.dialog_address_get_weather) { dialog, which ->
                     onCityClick(
-                        Weather (
-                            City (
+                        Weather(
+                            City(
                                 address,
                                 location.latitude,
                                 location.longitude
@@ -120,7 +120,7 @@ class MainFragment : Fragment(), OnCityViewClickListener {
     }
 
     private fun renderData(appState: AppState) {
-        when(appState) {
+        when (appState) {
             is AppState.Error -> {
                 binding.mainFragmentLoadingLayout.visibility = View.GONE
                 val throwable = appState.error
@@ -133,12 +133,16 @@ class MainFragment : Fragment(), OnCityViewClickListener {
                 binding.mainFragmentLoadingLayout.visibility = View.GONE
                 val weather = appState.weatherData
                 adapter.setWeather(weather)
-                binding.root.showSnackbarWithoutAction(binding.root, R.string.snackbar, Snackbar.LENGTH_SHORT)
+                binding.root.showSnackbarWithoutAction(
+                    binding.root,
+                    R.string.snackbar,
+                    Snackbar.LENGTH_SHORT
+                )
             }
         }
     }
 
-    fun View.showSnackbarWithoutAction(view : View, stringId : Int, length : Int) {
+    fun View.showSnackbarWithoutAction(view: View, stringId: Int, length: Int) {
         Snackbar.make(view, getString(stringId), length).show()
     }
 
@@ -174,22 +178,26 @@ class MainFragment : Fragment(), OnCityViewClickListener {
         }
     }
 
-    private fun getLocation () {
+    private fun getLocation() {
         activity?.let {
             if (ContextCompat.checkSelfPermission(
                     it,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                val locationManager =
+                    it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
                     provider?.let {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                            REFRESH_PERIOD, MINIMAL_DISTANCE, onLocationChangeListener)
+                        locationManager.requestLocationUpdates(
+                            LocationManager.GPS_PROVIDER,
+                            REFRESH_PERIOD, MINIMAL_DISTANCE, onLocationChangeListener
+                        )
                     }
                 } else {
-                    val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    val location =
+                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                     location?.let {
 
                     }
@@ -200,7 +208,7 @@ class MainFragment : Fragment(), OnCityViewClickListener {
         }
     }
 
-    private fun locationRequestPermission () {
+    private fun locationRequestPermission() {
         requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
     }
 
@@ -208,10 +216,10 @@ class MainFragment : Fragment(), OnCityViewClickListener {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.dialog_rationale_title)
             .setMessage(R.string.dialog_rationale_message)
-            .setPositiveButton(R.string.dialog_rationale_give_access) {dialog, which ->
+            .setPositiveButton(R.string.dialog_rationale_give_access) { dialog, which ->
                 locationRequestPermission()
             }
-            .setNegativeButton(R.string.dialog_rationale_decline) {dialog, which ->
+            .setNegativeButton(R.string.dialog_rationale_decline) { dialog, which ->
                 dialog.dismiss()
             }
             .create()

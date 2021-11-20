@@ -13,7 +13,7 @@ import ru.geekbrains.weather.repository.WeatherDTO
 import ru.geekbrains.weather.utils.convertDTOtoModel
 import ru.geekbrains.weather.viewmodel.AppState.*
 
-class DetailsViewModel (
+class DetailsViewModel(
     private val detailsLiveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val detailsRepositoryImplementation: DetailsRepositoryImplementation =
         DetailsRepositoryImplementation(RemoteDataSource()),
