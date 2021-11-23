@@ -31,7 +31,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    /*singingConfigs {
+    signingConfigs {
         Properties properties = new Properties()
         properties.load(rootProject.file("password.properties").newDataInputStream())
         def password = properties.getProperty("password")
@@ -41,11 +41,11 @@ android {
             keyAlias "weather"
             keyPassword = password
         }
-    }*/
+    }
 
     buildTypes {
         release {
-            //singingConfigs singingConfigs.release
+            signingConfig signingConfigs.release
             minifyEnabled false
             multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
