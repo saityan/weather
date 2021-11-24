@@ -66,6 +66,21 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    flavorDimensions 'edition', 'licence'
+    productFlavors {
+        professional {
+            dimension 'edition'
+        }
+        'default' {
+            dimension 'edition'
+        }
+        GPL {
+            dimension 'licence'
+        }
+        BSD {
+            dimension 'licence'
+        }
+    }
 }
 
 dependencies {
