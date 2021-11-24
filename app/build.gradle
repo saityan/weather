@@ -68,16 +68,16 @@ android {
     }
     flavorDimensions 'edition', 'licence'
     productFlavors {
-        professional {
+        'professional' {
             dimension 'edition'
         }
         'default' {
             dimension 'edition'
         }
-        GPL {
+        'GPL' {
             dimension 'licence'
         }
-        BSD {
+        'BSD' {
             dimension 'licence'
         }
     }
