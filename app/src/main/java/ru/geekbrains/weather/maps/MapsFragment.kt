@@ -16,11 +16,6 @@ import ru.geekbrains.weather.R
 import ru.geekbrains.weather.databinding.FragmentGoogleMapsMainBinding
 
 class MapsFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = MapsFragment()
-    }
-
     private var _binding: FragmentGoogleMapsMainBinding? = null
     private val binding: FragmentGoogleMapsMainBinding
         get() = _binding!!
@@ -30,19 +25,18 @@ class MapsFragment : Fragment() {
     private val markers: ArrayList<Marker> = arrayListOf()
 
     private val callback = OnMapReadyCallback { googleMap ->
+        this@MapsFragment.googleMap = googleMap
+
         val defaultLocation = LatLng(55.7, 37.6)
         googleMap.addMarker(
             MarkerOptions().position(defaultLocation).title("Marker in default location")
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation))
 
-        this@MapsFragment.googleMap = googleMap
-
         with(this@MapsFragment.googleMap) {
             uiSettings.isZoomControlsEnabled = true
             uiSettings.isZoomGesturesEnabled = true
             uiSettings.isMyLocationButtonEnabled = true
-            //isMyLocationEnabled = true
             setOnMapLongClickListener {
                 moveToLocation(it)
                 addMapMarker(it)
@@ -94,6 +88,7 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
         binding.buttonSearch.setOnClickListener {
             val geocoder = Geocoder(requireContext())
             val addressRow = binding.searchAddress.text.toString()
@@ -112,5 +107,9 @@ class MapsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        fun newInstance() = MapsFragment()
     }
 }
